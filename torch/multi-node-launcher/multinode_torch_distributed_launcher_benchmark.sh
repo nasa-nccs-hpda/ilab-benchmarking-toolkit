@@ -7,11 +7,11 @@
 #SBATCH --gres=gpu:4             # number of allocated gpus per node
 #SBATCH --time=11:00:00       # total run time limit (HH:MM:SS)
 
-##### Number of total processes 
+##### Number of total processes
 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX "
 echo "Nodelist:= " $SLURM_JOB_NODELIST
 echo "Number of nodes:= " $SLURM_JOB_NUM_NODES
-echo "Ntasks per node:= "  $SLURM_NTASKS_PER_NODE
+echo "Ntasks per node:= " $SLURM_NTASKS_PER_NODE
 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX "
 
 # export MASTER_PORT=$(expr 10000 + $(echo -n $SLURM_JOBID | tail -c 4))
@@ -36,14 +36,14 @@ nnodes=$SLURM_JOB_NUM_NODES
 module load mamba
 micromamba activate ilab-benchmark-torch-env
 
-launcher="python -u -m torch.distributed.run --nnodes=${nnodes} --master_addr ${MASTER_ADDR} --master_port ${MASTER_PORT} --nproc_per_node=4" 
-echo $launcher 
+launcher="python -u -m torch.distributed.run --nnodes=${nnodes} --master_addr ${MASTER_ADDR} --master_port ${MASTER_PORT} --nproc_per_node=4"
+echo $launcher
 
 cmd="train.py"
 echo $cmd
 
 echo "$launcher $cmd"
 
-srun --jobid $SLURM_JOBID bash -c "$launcher --node_rank \$SLURM_PROCID $cmd" 
+srun --jobid $SLURM_JOBID bash -c "$launcher --node_rank \$SLURM_PROCID $cmd"
 
 echo "END TIME: $(date)"
