@@ -24,7 +24,7 @@ pip install timm yacs
 
 cfg=swinv2_mim_pretrain_config.yaml
 batch_size=128
-num_samples=50000
+num_samples=524288
 dtype=$1
 
 echo "Benchmark arguments"
